@@ -100,3 +100,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 - Search functionality
 - Workspace analytics
 - Multi-server deployment
+
+**Update (13/07/2026):**
+* Initialized the Express.js backend using TypeScript and configured the basic project structure.
+* Added the server entry point, environment template, and a health-check route to verify the backend is running successfully.
