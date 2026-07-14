@@ -104,3 +104,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 **Update (13/07/2026):**
 * Initialized the Express.js backend using TypeScript and configured the basic project structure.
 * Added the server entry point, environment template, and a health-check route to verify the backend is running successfully.
+
+**Update (14/07/2026):**
+* Configured MongoDB connection using Mongoose with a dedicated src/config/db.ts module.
+* Updated the server startup process and environment variables for database connectivity
