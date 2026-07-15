@@ -108,3 +108,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 **Update (14/07/2026):**
 * Configured MongoDB connection using Mongoose with a dedicated src/config/db.ts module.
 * Updated the server startup process and environment variables for database connectivity
+
+**Update (15/07/2026):**
+* Added environment variable validation using envalid to ensure required configuration is available.
+* Updated the server to use validated environment variables during startup.
