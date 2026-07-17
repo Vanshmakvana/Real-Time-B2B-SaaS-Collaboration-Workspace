@@ -118,3 +118,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 * Configured tokens to include the user ID with a 7-day expiration period.
 * Implemented token verification and request authorization with appropriate error handling.
 
+**Update (17/07/2026):**
+* Added password comparison functionality for secure user authentication.
+* Integrated JWT generation and secure authentication flow using the User model.
+* Connected authentication routes to the Express application under /api/auth.
