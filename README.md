@@ -127,3 +127,18 @@ This project focuses on building a scalable real-time collaboration workspace wh
 * Added password comparison functionality for secure user authentication.
 * Integrated JWT generation and secure authentication flow using the User model.
 * Connected authentication routes to the Express application under /api/auth.
+
+**Update (18/07/2026):**
+* Improved authentication API responses with consistent success messages and structured user data.
+* Updated registration, login, and profile endpoints to return cleaner and more informative JSON responses.
+
+**Update (19/07/2026):**
+* Added a custom 404 middleware to return structured JSON responses for undefined routes.
+* Updated the Express middleware flow for better request handling and debugging.
+
+**Update (20/07/2026):**
+* Configured owner, members, invite code, and timestamps for workspace management.
+* Linked each channel to a workspace and creator with support for public and private visibility.
+* Established relationships between users, workspaces, and channels for collaborative data management.
+
+
