@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 import bcrypt from "bcrypt";
 
 export interface IUser extends Document {
@@ -7,6 +7,8 @@ export interface IUser extends Document {
   password: string;
   role: "admin" | "member";
   avatar?: string;
+
+  workspaces: Types.ObjectId[];
 
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
@@ -42,6 +44,13 @@ const UserSchema = new Schema<IUser>(
       type: String,
       default: "",
     },
+
+    workspaces: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Workspace",
+      },
+    ],
   },
   {
     timestamps: true,
