@@ -1,14 +1,10 @@
-# Real-Time B2B SaaS Collaboration Workspace
-
-A modern Slack/Notion-inspired collaboration platform built using the MERN stack. The application enables teams to create workspaces, communicate through real-time channels, and collaborate efficiently using WebSockets and Redis for scalable real-time synchronization.
-
----
+Project 2: 
+Project 1: Real-Time-B2B-SaaS-Collaboration-Workspace
 
 ## Executive Problem Statement
 
-Modern remote teams require a centralized collaboration platform that supports instant communication and document sharing. Traditional HTTP polling introduces delays, high API usage, and poor user experience.
-
-This project focuses on building a scalable real-time collaboration workspace where users can create workspaces, join channels, exchange messages instantly, and collaborate seamlessly through persistent WebSocket connections.
+Modern remote teams require a centralized collaboration platform that supports instant communication, document sharing, and efficient team coordination. Traditional HTTP polling introduces delays, increased API requests, and poor user experience, making it unsuitable for modern real-time applications. 
+This project focuses on building a scalable real-time collaboration workspace where users can create and manage workspaces, join communication channels, exchange messages instantly, and collaborate seamlessly through persistent WebSocket connections. The platform also emphasizes secure authentication, role-based access control, and a modular backend architecture to ensure scalability, maintainability, and high performance as the application grows.
 
 ---
 
