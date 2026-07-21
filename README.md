@@ -137,4 +137,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 * Linked each channel to a workspace and creator with support for public and private visibility.
 * Established relationships between users, workspaces, and channels for collaborative data management.
 
+**Update (21/07/2026):**
+* Linked messages to users, workspaces, and channels with edit tracking support
+* Added an API to retrieve all workspaces associated with the authenticated user.
 
