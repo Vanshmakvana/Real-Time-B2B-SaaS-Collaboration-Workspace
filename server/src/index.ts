@@ -3,12 +3,16 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { responseFormatter } from './middleware/response';
 import apiRouter from './routes';
+import { connectDatabase } from './config/db';
 
 // Load environment variables
 dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
+
+// Initialize Database Connection
+connectDatabase();
 
 // Security and Parsing Middleware
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
