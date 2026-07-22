@@ -141,3 +141,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 * Linked messages to users, workspaces, and channels with edit tracking support
 * Added an API to retrieve all workspaces associated with the authenticated user.
 
+**Update (22/07/2026):**
+* Completed workspace CRUD operations with dedicated Express routes.
+* Added secure update and delete functionality with owner-based authorization.
+
