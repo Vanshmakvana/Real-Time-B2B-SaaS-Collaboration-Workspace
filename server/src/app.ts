@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-
+import workspaceRoutes from "./routes/workspaceRoutes";
 import authRoutes from "./routes/authRoutes";
 import errorHandler from "./middleware/errorMiddleware";
 
@@ -18,7 +18,7 @@ app.get("/", (_, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-
+app.use("/api/workspaces", workspaceRoutes);
 app.use(errorHandler);
 
 export default app;
