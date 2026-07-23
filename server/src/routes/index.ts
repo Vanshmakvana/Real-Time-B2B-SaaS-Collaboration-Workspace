@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { CustomResponse } from '../middleware/response';
 import authRoutes from './auth.routes';
 import workspaceRoutes from './workspace.routes';
+import channelRoutes from './channel.routes';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.get('/health', (req, res) => {
 // Bind Application Routes
 router.use('/auth', authRoutes);
 router.use('/workspaces', workspaceRoutes);
+router.use('/workspaces/:workspaceId/channels', channelRoutes);
 
 export default router;
