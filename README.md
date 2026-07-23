@@ -145,3 +145,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 * Completed workspace CRUD operations with dedicated Express routes.
 * Added secure update and delete functionality with owner-based authorization.
 
+**Update (23/07/2026):**
+* Enabled channel management with secure database operations.
+* Integrated channel routes into the Express application.
+
