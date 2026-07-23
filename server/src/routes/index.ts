@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { CustomResponse } from '../middleware/response';
 import authRoutes from './auth.routes';
+import workspaceRoutes from './workspace.routes';
 
 const router = Router();
 
@@ -10,7 +11,8 @@ router.get('/health', (req, res) => {
   customRes.success({ status: 'UP', timestamp: new Date() }, 'Server is running smoothly');
 });
 
-// Bind Auth Routes
+// Bind Application Routes
 router.use('/auth', authRoutes);
+router.use('/workspaces', workspaceRoutes);
 
 export default router;
