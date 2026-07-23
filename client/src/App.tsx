@@ -1,31 +1,76 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AuthPage } from './pages/AuthPage';
+import { WorkspaceSelector } from './components/WorkspaceSelector';
 
-const MainContent: React.FC = () => {
-  const { isAuthenticated, user, logout } = useAuth();
+interface Workspace {
+  id: string;
+  name: string;
+  slug: string;
+  inviteCode: string;
+}
 
-  if (!isAuthenticated) {
-    return <AuthPage />;
-  }
+const DashboardLayout: React.FC = () => {
+  const { user, logout } = useAuth();
+  const [selectedWorkspace, setSelectedWorkspace] = useState<Workspace | null>(null);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-4">
-      <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-xl p-8 shadow-2xl text-center">
-        <h1 className="text-2xl font-bold text-indigo-400 mb-2">
-          Welcome back, {user?.name}!
-        </h1>
-        <p className="text-slate-400 text-sm mb-6">{user?.email}</p>
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex overflow-hidden">
+      {/* Workspace Sidebar */}
+      <WorkspaceSelector
+        selectedWorkspaceId={selectedWorkspace?.id}
+        onSelectWorkspace={(ws) => setSelectedWorkspace(ws)}
+      />
 
-        <button
-          onClick={logout}
-          className="bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-        >
-          Sign Out
-        </button>
+      {/* Main Workspace View */}
+      <div className="flex-1 flex flex-col">
+        {/* Top Header */}
+        <header className="h-14 border-b border-slate-800 px-6 flex items-center justify-between bg-slate-900/50 backdrop-blur">
+          <div className="flex items-center gap-3">
+            <h1 className="font-bold text-slate-100 text-lg">
+              {selectedWorkspace ? selectedWorkspace.name : 'Select a Workspace'}
+            </h1>
+            {selectedWorkspace && (
+              <span className="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-md font-mono border border-slate-700">
+                Code: {selectedWorkspace.inviteCode}
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-slate-400 font-medium">
+              {user?.name}
+            </span>
+            <button
+              onClick={logout}
+              className="text-xs text-red-400 bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded-lg border border-red-500/20 transition-colors"
+            >
+              Sign Out
+            </button>
+          </div>
+        </header>
+
+        {/* Workspace Body Placeholder */}
+        <main className="flex-1 p-6 flex items-center justify-center">
+          {selectedWorkspace ? (
+            <div className="text-center text-slate-500">
+              <p className="text-lg font-medium text-slate-400 mb-1">
+                Active Workspace: <span className="text-indigo-400">{selectedWorkspace.name}</span>
+              </p>
+              <p className="text-sm">Channel sidebar and chat window will be integrated in Week 3.</p>
+            </div>
+          ) : (
+            <p className="text-slate-500">Create or select a workspace from the left bar to get started.</p>
+          )}
+        </main>
       </div>
     </div>
   );
+};
+
+const MainContent: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <DashboardLayout /> : <AuthPage />;
 };
 
 export const App: React.FC = () => {
