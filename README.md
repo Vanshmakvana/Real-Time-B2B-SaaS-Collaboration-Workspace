@@ -149,3 +149,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 * Enabled channel management with secure database operations.
 * Integrated channel routes into the Express application.
 
+**Update (24/07/2026):**
+* Linked messages with authenticated users and populated sender information.
+* Integrated message routes into the Express application for channel communication.
+
