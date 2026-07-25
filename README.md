@@ -153,3 +153,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 * Linked messages with authenticated users and populated sender information.
 * Integrated message routes into the Express application for channel communication.
 
+**Update (25/07/2026):**
+* Added an API to join a workspace using a unique invite code.
+* Updated JWT generation to include user roles for access control.
+
