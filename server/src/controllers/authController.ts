@@ -27,7 +27,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   res.status(201).json({
     success: true,
     message: "User registered successfully",
-    token: generateToken(user.id),
+    token: generateToken(user.id, user.role),
     data: {
       id: user.id,
       name: user.name,
@@ -54,7 +54,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   res.json({
     success: true,
     message: "Login successful",
-    token: generateToken(user.id),
+    token: generateToken(user.id, user.role),
     data: {
       id: user.id,
       name: user.name,
