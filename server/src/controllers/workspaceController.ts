@@ -138,3 +138,77 @@ export const deleteWorkspace = asyncHandler(async (req: AuthRequest, res: Respon
     message: "Workspace deleted successfully",
   });
 });
+
+export const joinWorkspace = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const { inviteCode } = req.body;
+
+  const workspace = await Workspace.findOne({ inviteCode });
+
+  if (!workspace) {
+    res.status(404).json({
+      success: false,
+      message: "Invalid invite code",
+    });
+
+    return;
+  }
+
+  if (workspace.members.includes(req.user?.id as any)) {
+    res.status(400).json({
+      success: false,
+      message: "You are already a member of this workspace",
+    });
+
+    return;
+  }
+
+  workspace.members.push(req.user?.id as any);
+
+  await workspace.save();
+
+  await User.findByIdAndUpdate(req.user?.id, {
+    $push: {
+      workspaces: workspace._id,
+    },
+  });
+
+  res.json({
+    success: true,
+    message: "Successfully joined workspace",
+    data: workspace,
+  });
+});
+
+export const regenerateInviteCode = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const workspace = await Workspace.findById(req.params.id);
+
+  if (!workspace) {
+    res.status(404).json({
+      success: false,
+      message: "Workspace not found",
+    });
+
+    return;
+  }
+
+  if (workspace.owner.toString() !== req.user?.id) {
+    res.status(403).json({
+      success: false,
+      message: "Only the workspace owner can regenerate the invite code",
+    });
+
+    return;
+  }
+
+  workspace.inviteCode = require("crypto")
+    .randomBytes(5)
+    .toString("hex");
+
+  await workspace.save();
+
+  res.json({
+    success: true,
+    message: "Invite code regenerated successfully",
+    inviteCode: workspace.inviteCode,
+  });
+});
