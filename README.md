@@ -157,3 +157,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 * Added an API to join a workspace using a unique invite code.
 * Updated JWT generation to include user roles for access control.
 
+**Update (26/07/2026):**
+* Added pagination support for workspace and message retrieval APIs.
+* Added reusable HTTP status constants for cleaner and more maintainable API responses.
+
