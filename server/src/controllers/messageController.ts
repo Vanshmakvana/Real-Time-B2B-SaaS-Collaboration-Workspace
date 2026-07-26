@@ -36,20 +36,34 @@ export const sendMessage = asyncHandler(async (req: AuthRequest, res: Response) 
   });
 });
 
-export const getChannelMessages = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const messages = await Message.find({
-    channel: req.params.channelId,
-  })
-    .populate("sender", "name email avatar")
-    .sort({ createdAt: 1 });
+export const getChannelMessages = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 20;
 
-  res.json({
-    success: true,
-    count: messages.length,
-    data: messages,
-  });
-});
+    const skip = (page - 1) * limit;
 
+    const total = await Message.countDocuments({
+      channel: req.params.channelId,
+    });
+
+    const messages = await Message.find({
+      channel: req.params.channelId,
+    })
+      .populate("sender", "name email avatar")
+      .sort({ createdAt: 1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.json({
+      success: true,
+      page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+      data: messages,
+    });
+  }
+);
 export const updateMessage = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { content } = req.body;
 
