@@ -33,19 +33,34 @@ export const createWorkspace = asyncHandler(async (req: AuthRequest, res: Respon
   });
 });
 
-export const getMyWorkspaces = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const workspaces = await Workspace.find({
-    members: req.user?.id,
-  })
-    .populate("owner", "name email")
-    .sort({ createdAt: -1 });
+export const getMyWorkspaces = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
 
-  res.json({
-    success: true,
-    count: workspaces.length,
-    data: workspaces,
-  });
-});
+    const skip = (page - 1) * limit;
+
+    const total = await Workspace.countDocuments({
+      members: req.user?.id,
+    });
+
+    const workspaces = await Workspace.find({
+      members: req.user?.id,
+    })
+      .populate("owner", "name email")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.json({
+      success: true,
+      page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+      data: workspaces,
+    });
+  }
+);
 
 export const getWorkspaceById = asyncHandler(async (req: AuthRequest, res: Response) => {
   const workspace = await Workspace.findById(req.params.id)
@@ -212,3 +227,23 @@ export const regenerateInviteCode = asyncHandler(async (req: AuthRequest, res: R
     inviteCode: workspace.inviteCode,
   });
 });
+
+export const searchWorkspaces = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const keyword = req.query.keyword || "";
+
+    const workspaces = await Workspace.find({
+      members: req.user?.id,
+      name: {
+        $regex: keyword,
+        $options: "i",
+      },
+    });
+
+    res.json({
+      success: true,
+      count: workspaces.length,
+      data: workspaces,
+    });
+  }
+);
