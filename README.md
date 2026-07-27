@@ -161,3 +161,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 * Added pagination support for workspace and message retrieval APIs.
 * Added reusable HTTP status constants for cleaner and more maintainable API responses.
 
+**Update (27/07/2026):**
+* Updated the server startup process to initialize the Socket.IO server.
+* Created a reusable Socket.IO initialization module and added JWT-based authentication for Socket.IO client connections.
+
