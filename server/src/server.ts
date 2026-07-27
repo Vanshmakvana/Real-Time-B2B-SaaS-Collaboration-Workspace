@@ -1,17 +1,25 @@
-import dotenv from "dotenv";
+import http from "http";
+
 import app from "./app";
-import connectDB from "./config/db";
-
-dotenv.config();
-
-const PORT = process.env.PORT || 5000;
+import { env } from "./config/env";
+import { connectDB } from "./config/db";
+import { initializeSocket } from "./socket/socket";
 
 const startServer = async () => {
+  try {
     await connectDB();
 
-    app.listen(PORT, () => {
-        console.log(`🚀 Server running on port ${PORT}`);
+    const server = http.createServer(app);
+
+    initializeSocket(server);
+
+    server.listen(env.PORT, () => {
+      console.log(`🚀 Server running on port ${env.PORT}`);
     });
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
 };
 
 startServer();
