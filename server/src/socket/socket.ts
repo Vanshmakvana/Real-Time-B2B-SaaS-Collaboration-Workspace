@@ -9,6 +9,8 @@ interface JwtPayload {
   role: string;
 }
 
+const onlineUsers = new Map<string, string>();
+
 let io: Server;
 
 export const initializeSocket = (server: http.Server): Server => {
@@ -27,13 +29,8 @@ export const initializeSocket = (server: http.Server): Server => {
     }
 
     try {
-      const decoded = jwt.verify(
-        token,
-        env.JWT_SECRET
-      ) as JwtPayload;
-
+      const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
       socket.data.user = decoded;
-
       next();
     } catch {
       next(new Error("Invalid token"));
@@ -41,14 +38,40 @@ export const initializeSocket = (server: http.Server): Server => {
   });
 
   io.on("connection", (socket) => {
-    console.log(
-      `✅ ${socket.data.user.id} connected (${socket.id})`
-    );
+    const userId = socket.data.user.id;
+
+    onlineUsers.set(userId, socket.id);
+
+    io.emit("user-online", { userId });
+
+    console.log(`✅ ${userId} connected (${socket.id})`);
+
+    socket.on("join-workspace", (workspaceId: string) => {
+      socket.join(`workspace:${workspaceId}`);
+      socket.emit("workspace-joined", { workspaceId });
+    });
+
+    socket.on("leave-workspace", (workspaceId: string) => {
+      socket.leave(`workspace:${workspaceId}`);
+      socket.emit("workspace-left", { workspaceId });
+    });
+
+    socket.on("join-channel", (channelId: string) => {
+      socket.join(`channel:${channelId}`);
+      socket.emit("channel-joined", { channelId });
+    });
+
+    socket.on("leave-channel", (channelId: string) => {
+      socket.leave(`channel:${channelId}`);
+      socket.emit("channel-left", { channelId });
+    });
 
     socket.on("disconnect", () => {
-      console.log(
-        `❌ ${socket.data.user.id} disconnected`
-      );
+      onlineUsers.delete(userId);
+
+      io.emit("user-offline", { userId });
+
+      console.log(`❌ ${userId} disconnected`);
     });
   });
 
@@ -62,3 +85,5 @@ export const getIO = (): Server => {
 
   return io;
 };
+
+export const getOnlineUsers = () => onlineUsers;
