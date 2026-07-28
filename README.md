@@ -165,3 +165,6 @@ This project focuses on building a scalable real-time collaboration workspace wh
 * Updated the server startup process to initialize the Socket.IO server.
 * Created a reusable Socket.IO initialization module and added JWT-based authentication for Socket.IO client connections.
 
+**Update (27/07/2026):**
+* Added Socket.IO workspace and channel room management with real-time user presence tracking.
+
