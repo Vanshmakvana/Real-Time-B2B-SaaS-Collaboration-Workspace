@@ -41,10 +41,7 @@ export const initializeSocket = (server: http.Server): Server => {
     const userId = socket.data.user.id;
 
     onlineUsers.set(userId, socket.id);
-
     io.emit("user-online", { userId });
-
-    console.log(`✅ ${userId} connected (${socket.id})`);
 
     socket.on("join-workspace", (workspaceId: string) => {
       socket.join(`workspace:${workspaceId}`);
@@ -66,12 +63,30 @@ export const initializeSocket = (server: http.Server): Server => {
       socket.emit("channel-left", { channelId });
     });
 
+    socket.on("send-message", (message) => {
+      io.to(`channel:${message.channelId}`).emit("receive-message", {
+        ...message,
+        senderId: userId,
+        createdAt: new Date(),
+      });
+    });
+
+    socket.on("typing", (data: { channelId: string; userName: string }) => {
+      socket.to(`channel:${data.channelId}`).emit("user-typing", {
+        userId,
+        userName: data.userName,
+      });
+    });
+
+    socket.on("stop-typing", (data: { channelId: string }) => {
+      socket.to(`channel:${data.channelId}`).emit("user-stop-typing", {
+        userId,
+      });
+    });
+
     socket.on("disconnect", () => {
       onlineUsers.delete(userId);
-
       io.emit("user-offline", { userId });
-
-      console.log(`❌ ${userId} disconnected`);
     });
   });
 
