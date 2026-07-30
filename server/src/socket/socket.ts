@@ -41,11 +41,20 @@ export const initializeSocket = (server: http.Server): Server => {
     const userId = socket.data.user.id;
 
     onlineUsers.set(userId, socket.id);
+
+    socket.emit("online-users", Array.from(onlineUsers.keys()));
+
     io.emit("user-online", { userId });
 
     socket.on("join-workspace", (workspaceId: string) => {
       socket.join(`workspace:${workspaceId}`);
+
       socket.emit("workspace-joined", { workspaceId });
+
+      socket.emit("workspace-presence", {
+        workspaceId,
+        onlineUsers: Array.from(onlineUsers.keys()),
+      });
     });
 
     socket.on("leave-workspace", (workspaceId: string) => {
@@ -55,7 +64,13 @@ export const initializeSocket = (server: http.Server): Server => {
 
     socket.on("join-channel", (channelId: string) => {
       socket.join(`channel:${channelId}`);
+
       socket.emit("channel-joined", { channelId });
+
+      socket.emit("channel-presence", {
+        channelId,
+        onlineUsers: Array.from(onlineUsers.keys()),
+      });
     });
 
     socket.on("leave-channel", (channelId: string) => {
@@ -84,8 +99,17 @@ export const initializeSocket = (server: http.Server): Server => {
       });
     });
 
+    socket.on("message-read", (data: { messageId: string; channelId: string }) => {
+      socket.to(`channel:${data.channelId}`).emit("message-read-update", {
+        messageId: data.messageId,
+        readBy: userId,
+        readAt: new Date(),
+      });
+    });
+
     socket.on("disconnect", () => {
       onlineUsers.delete(userId);
+
       io.emit("user-offline", { userId });
     });
   });
