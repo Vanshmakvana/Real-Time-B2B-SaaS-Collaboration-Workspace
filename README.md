@@ -171,3 +171,6 @@ This project focuses on building a scalable real-time collaboration workspace wh
 **Update (29/07/2026):**
 * Added real-time message broadcasting with typing and stop-typing indicators for channel conversations.
 
+**Update (30/07/2026):**
+* Added real-time read receipts, online user APIs, and synchronized workspace and channel presence tracking.
+
