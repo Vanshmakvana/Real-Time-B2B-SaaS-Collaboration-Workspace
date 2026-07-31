@@ -7,6 +7,8 @@ import User from "../models/User";
 import asyncHandler from "../utils/asyncHandler";
 import { AuthRequest } from "../middleware/authMiddleware";
 
+import { getIO } from "../socket/socket";
+
 export const createWorkspace = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { name, description } = req.body;
 
@@ -247,3 +249,21 @@ export const searchWorkspaces = asyncHandler(
     });
   }
 );
+
+export const notifyWorkspaceInvite = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const { targetUserId, workspaceId, workspaceName } = req.body;
+
+  const io = getIO();
+
+  io.to(`user:${targetUserId}`).emit("workspace-invite", {
+    workspaceId,
+    workspaceName,
+    invitedBy: req.user?.id,
+    createdAt: new Date(),
+  });
+
+  res.json({
+    success: true,
+    message: "Workspace invite notification sent",
+  });
+});
