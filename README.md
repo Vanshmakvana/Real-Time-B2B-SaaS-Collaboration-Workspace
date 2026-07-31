@@ -174,3 +174,6 @@ This project focuses on building a scalable real-time collaboration workspace wh
 **Update (30/07/2026):**
 * Added real-time read receipts, online user APIs, and synchronized workspace and channel presence tracking.
 
+**Update (31/07/2026):**
+* Added real-time user notification rooms, workspace invite notifications, and channel activity alerts for workspace members.
+
