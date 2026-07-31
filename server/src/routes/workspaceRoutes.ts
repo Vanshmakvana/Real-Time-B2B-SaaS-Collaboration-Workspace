@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import protect from "../middleware/authMiddleware";
 
 import {
@@ -10,30 +11,26 @@ import {
   joinWorkspace,
   regenerateInviteCode,
   searchWorkspaces,
+  notifyWorkspaceInvite,
 } from "../controllers/workspaceController";
 
 const router = Router();
 
 router.use(protect);
 
-// Create a workspace & Get all workspaces
-router
-  .route("/")
+router.route("/")
   .post(createWorkspace)
   .get(getMyWorkspaces);
 
-// Search workspaces
 router.get("/search", searchWorkspaces);
 
-// Join a workspace using an invite code
 router.post("/join", joinWorkspace);
 
-// Regenerate invite code
+router.post("/invite-notify", notifyWorkspaceInvite);
+
 router.put("/:id/invite", regenerateInviteCode);
 
-// Workspace CRUD operations
-router
-  .route("/:id")
+router.route("/:id")
   .get(getWorkspaceById)
   .put(updateWorkspace)
   .delete(deleteWorkspace);
