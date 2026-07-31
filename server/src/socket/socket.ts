@@ -41,41 +41,19 @@ export const initializeSocket = (server: http.Server): Server => {
     const userId = socket.data.user.id;
 
     onlineUsers.set(userId, socket.id);
+    socket.join(`user:${userId}`);
 
     socket.emit("online-users", Array.from(onlineUsers.keys()));
-
     io.emit("user-online", { userId });
 
     socket.on("join-workspace", (workspaceId: string) => {
       socket.join(`workspace:${workspaceId}`);
-
       socket.emit("workspace-joined", { workspaceId });
-
-      socket.emit("workspace-presence", {
-        workspaceId,
-        onlineUsers: Array.from(onlineUsers.keys()),
-      });
-    });
-
-    socket.on("leave-workspace", (workspaceId: string) => {
-      socket.leave(`workspace:${workspaceId}`);
-      socket.emit("workspace-left", { workspaceId });
     });
 
     socket.on("join-channel", (channelId: string) => {
       socket.join(`channel:${channelId}`);
-
       socket.emit("channel-joined", { channelId });
-
-      socket.emit("channel-presence", {
-        channelId,
-        onlineUsers: Array.from(onlineUsers.keys()),
-      });
-    });
-
-    socket.on("leave-channel", (channelId: string) => {
-      socket.leave(`channel:${channelId}`);
-      socket.emit("channel-left", { channelId });
     });
 
     socket.on("send-message", (message) => {
@@ -84,32 +62,18 @@ export const initializeSocket = (server: http.Server): Server => {
         senderId: userId,
         createdAt: new Date(),
       });
-    });
 
-    socket.on("typing", (data: { channelId: string; userName: string }) => {
-      socket.to(`channel:${data.channelId}`).emit("user-typing", {
-        userId,
-        userName: data.userName,
-      });
-    });
-
-    socket.on("stop-typing", (data: { channelId: string }) => {
-      socket.to(`channel:${data.channelId}`).emit("user-stop-typing", {
-        userId,
-      });
-    });
-
-    socket.on("message-read", (data: { messageId: string; channelId: string }) => {
-      socket.to(`channel:${data.channelId}`).emit("message-read-update", {
-        messageId: data.messageId,
-        readBy: userId,
-        readAt: new Date(),
+      io.to(`workspace:${message.workspaceId}`).emit("channel-activity", {
+        workspaceId: message.workspaceId,
+        channelId: message.channelId,
+        senderId: userId,
+        preview: message.content?.slice(0, 50),
+        createdAt: new Date(),
       });
     });
 
     socket.on("disconnect", () => {
       onlineUsers.delete(userId);
-
       io.emit("user-offline", { userId });
     });
   });
@@ -118,10 +82,7 @@ export const initializeSocket = (server: http.Server): Server => {
 };
 
 export const getIO = (): Server => {
-  if (!io) {
-    throw new Error("Socket.IO has not been initialized.");
-  }
-
+  if (!io) throw new Error("Socket.IO not initialized");
   return io;
 };
 
