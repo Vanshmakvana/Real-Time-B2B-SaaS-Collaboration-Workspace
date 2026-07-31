@@ -30,7 +30,7 @@ const userSchema = new Schema<IUser>(
     timestamps: true,
     // Automatically sanitize JSON representations before sending them over the wire
     toJSON: {
-      transform: (doc, ret) => {
+      transform: (doc, ret: any) => {
         ret.id = ret._id.toString();
         delete ret._id;
         delete ret.password; // Strips password from responses cleanly
