@@ -177,3 +177,6 @@ This project focuses on building a scalable real-time collaboration workspace wh
 **Update (31/07/2026):**
 * Added real-time user notification rooms, workspace invite notifications, and channel activity alerts for workspace members.
 
+**Update (01/08/2026):**
+* Added socket event validation, centralized socket error handling, and rate limiting with performance optimizations for real-time messaging.
+
