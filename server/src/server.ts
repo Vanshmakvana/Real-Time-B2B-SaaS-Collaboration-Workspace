@@ -3,7 +3,7 @@ import http from "http";
 import app from "./app";
 import { env } from "./config/env";
 import { connectDB } from "./config/db";
-import { initializeSocket } from "./socket/socket";
+import { initializeSocket } from "./socket";
 
 const startServer = async () => {
   try {
@@ -15,6 +15,7 @@ const startServer = async () => {
 
     server.listen(env.PORT, () => {
       console.log(`🚀 Server running on port ${env.PORT}`);
+      console.log(`⚡ Socket.IO server ready`);
     });
   } catch (error) {
     console.error(error);
