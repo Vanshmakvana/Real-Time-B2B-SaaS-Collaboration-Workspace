@@ -180,3 +180,6 @@ This project focuses on building a scalable real-time collaboration workspace wh
 **Update (01/08/2026):**
 * Added socket event validation, centralized socket error handling, and rate limiting with performance optimizations for real-time messaging.
 
+**Update (02/08/2026):**
+* Added centralized socket event documentation, a Socket.IO client example, and final socket module cleanup for easier frontend integration.
+
