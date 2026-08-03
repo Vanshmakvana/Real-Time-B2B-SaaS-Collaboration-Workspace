@@ -3,6 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
+import { env } from "./config/env";
+
 import authRoutes from "./routes/authRoutes";
 import workspaceRoutes from "./routes/workspaceRoutes";
 import channelRoutes from "./routes/channelRoutes";
@@ -27,21 +29,38 @@ app.use(
   })
 );
 
-app.use(cors());
-app.use(express.json());
+app.use(
+  cors({
+    origin: env.CLIENT_URL,
+    credentials: true,
+  })
+);
+
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: true, limit: "1mb" }));
+
+app.get("/health", (_req, res) => {
+  res.json({
+    success: true,
+    status: "healthy",
+    environment: env.NODE_ENV,
+    timestamp: new Date().toISOString(),
+  });
+});
 
 app.get("/", (_req, res) => {
   res.json({
     success: true,
-    message: "API Running",
+    message: "B2B Collaboration API Running",
+    version: "v1",
   });
 });
 
-app.use("/api/auth", authRoutes);
-app.use("/api/workspaces", workspaceRoutes);
-app.use("/api/channels", channelRoutes);
-app.use("/api/messages", messageRoutes);
-app.use("/api/socket", socketRoutes);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/workspaces", workspaceRoutes);
+app.use("/api/v1/channels", channelRoutes);
+app.use("/api/v1/messages", messageRoutes);
+app.use("/api/v1/socket", socketRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
