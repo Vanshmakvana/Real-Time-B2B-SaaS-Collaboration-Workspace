@@ -10,23 +10,21 @@ import protect from "../middleware/authMiddleware";
 import validateRequest from "../middleware/validateRequest";
 
 import {
-  registerValidator,
-  loginValidator,
-} from "../validators/authValidator";
+  registerSchema,
+  loginSchema,
+} from "../validators/authSchemas";
 
 const router = Router();
 
 router.post(
   "/register",
-  registerValidator,
-  validateRequest,
+  validateRequest(registerSchema),
   register
 );
 
 router.post(
   "/login",
-  loginValidator,
-  validateRequest,
+  validateRequest(loginSchema),
   login
 );
 
