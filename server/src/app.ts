@@ -13,26 +13,28 @@ import channelRoutes from "./routes/channelRoutes";
 import messageRoutes from "./routes/messageRoutes";
 import socketRoutes from "./routes/socketRoutes";
 
+import requestId from "./middleware/requestId";
+import requestLogger from "./middleware/requestLogger";
+
 import notFound from "./middleware/notFound";
 import errorHandler from "./middleware/errorMiddleware";
 
 const app = express();
 
+app.use(requestId);
+app.use(requestLogger);
+
 app.use(helmet());
 
-app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-  })
-);
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+}));
 
-app.use(
-  cors({
-    origin: env.CLIENT_URL,
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: env.CLIENT_URL,
+  credentials: true,
+}));
 
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
