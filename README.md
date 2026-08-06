@@ -192,4 +192,7 @@ This project focuses on building a scalable real-time collaboration workspace wh
 **Update (05/08/2026):**
 * Added structured logging, request tracing, HTTP request logs, and centralized error logging with request IDs for production monitoring.
 
+**Update (06/08/2026):**
+* Added Jest and Supertest testing setup with authentication, workspace, and Socket.IO smoke tests for automated backend validation.
+
 
