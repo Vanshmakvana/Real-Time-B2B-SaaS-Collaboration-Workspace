@@ -1,0 +1,40 @@
+{
+  "info": {
+    "name": "B2B Collaboration API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5000/health",
+          "host": ["http://localhost:5000"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Prathmesh\",\n  \"email\": \"prathmesh@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/v1/auth/register",
+          "host": ["http://localhost:5000"],
+          "path": ["api", "v1", "auth", "register"]
+        }
+      }
+    }
+  ]
+}
