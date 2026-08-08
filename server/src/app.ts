@@ -18,6 +18,8 @@ import requestLogger from "./middleware/requestLogger";
 
 import notFound from "./middleware/notFound";
 import errorHandler from "./middleware/errorMiddleware";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 
 const app = express();
 
@@ -64,6 +66,7 @@ app.use("/api/v1/workspaces", workspaceRoutes);
 app.use("/api/v1/channels", channelRoutes);
 app.use("/api/v1/messages", messageRoutes);
 app.use("/api/v1/socket", socketRoutes);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(notFound);
 app.use(errorHandler);
