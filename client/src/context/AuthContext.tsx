@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import { socketService } from '../services/socket';
 
 interface User {
   id: string;
@@ -35,6 +36,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
+    // Disconnect socket before clearing auth state
+    socketService.disconnect();
     setUser(null);
     setToken(null);
     localStorage.removeItem('user');
