@@ -1,11 +1,9 @@
-import { Document, Types } from 'mongoose';
-
-export interface IChannel extends Document {
+export interface Channel {
   id: string;
   name: string;
-  workspace: Types.ObjectId;
+  workspace: string;
   isPrivate: boolean;
-  createdBy: Types.ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
 }
